@@ -13,7 +13,7 @@ MANDIR ?= $(PREFIX)/share/man
 
 # Optional build arguments; user may wish to override
 
-OPTFLAGS ?= -Wall -O3
+OPTFLAGS ?= -Wall -O0
 
 # Required build arguments
 
@@ -84,6 +84,30 @@ OBJS += bsd/coretemp.o
 endif
 CPPFLAGS += -Ibsd/
 LDLIBS += -lm
+endif
+
+ifeq ($(PLATFORM), mach)
+ARCH = $(shell uname -m)
+OBJS += sensorfieldmeter.o \
+        mach/MeterMaker.o \
+        mach/btrymeter.o \
+        mach/cpumeter.o \
+        mach/diskmeter.o \
+        mach/intmeter.o \
+        mach/intratemeter.o \
+        mach/kernel.o \
+        mach/loadmeter.o \
+        mach/memmeter.o \
+        mach/netmeter.o \
+        mach/pagemeter.o \
+        mach/swapmeter.o \
+        mach/sensor.o
+ifeq ($(ARCH),$(filter $(ARCH),i386 amd64 x86_64))
+OBJS += mach/coretemp.o
+endif
+CPPFLAGS += -g -Imach/ -I/opt/X11/include
+LDLIBS += -lm -L/opt/X11/lib
+LIBRARY_PATH += /opt/X11/lib
 endif
 
 ifeq ($(PLATFORM), irix65)

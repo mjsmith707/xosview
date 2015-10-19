@@ -8,7 +8,8 @@
 #include "meter.h"
 #include "MeterMaker.h"
 #if ( defined(XOSVIEW_NETBSD) || defined(XOSVIEW_FREEBSD) || \
-      defined(XOSVIEW_OPENBSD) || defined(XOSVIEW_DFBSD) )
+      defined(XOSVIEW_OPENBSD) || defined(XOSVIEW_DFBSD) || \
+      defined(XOSVIEW_MACH) )
 # include "kernel.h"
 #endif
 #include <stdlib.h>
@@ -88,6 +89,8 @@ XOSView::XOSView( const char * instName, int argc, char *argv[] ) : XWin(),
 #if ( defined(XOSVIEW_NETBSD) || defined(XOSVIEW_FREEBSD) || \
       defined(XOSVIEW_OPENBSD) || defined(XOSVIEW_DFBSD) )
   BSDInit();	/*  Needs to be done before processing of -N option.  */
+#elif ( defined(XOSVIEW_MACH) )
+  MACHInit();
 #endif
 
   hmargin_  = atoi(getResource("horizontalMargin"));
